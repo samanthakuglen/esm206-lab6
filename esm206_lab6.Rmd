@@ -15,7 +15,7 @@ library(equatiomatic)
 
 ## Example of a rank-based test
 
-We'll make out own samples, using a pseudorandom generator. Set seed allows us to get the starting point of getting "predictable, pseudo-random" random values. Setting the starting point of values from which they are pulled
+We'll make out own samples, using a pseudorandom generator. Set seed allows us to get the starting point of getting "predictable, pseudo-random" random values. Setting the starting point of values from which they are pulled. You must clear the workspace to reset the seed
 ```{r}
 set.seed(1414)
 
@@ -26,4 +26,39 @@ set.seed(1424)
 gp_2 <- sample.int(30, size = 15, replace = TRUE)
 
 ```
+
+```{r}
+# quick historgram for exploratory vectors...
+# not from normally distributed populations
+hist(gp_1)
+
+hist(gp_2)
+```
+
+Try a T-test:
+```{r}
+t.test(gp_1, gp_2)
+```
+The p-value is 0.1982. If these samples were drawn from populations with the same mean, the probability of taking two random samples with means *at least as different* as the sample means we would by random chance (taking into account spread, n) is 19.8%. There is a 19.8% chance we would have found samples as different as ours by random chance.
+
+Retain (fail to reject) the null hypothesis >> There is no significant different in means between group 1 and group 2. Note: never say "accept" the null
+
+Now let's compare outcome to a rank-based test.
+
+## Mann Whitney U unpaired rank-based test
+```{r}
+mwu <- wilcox.test(gp_1, gp_2)
+
+mwu
+
+```
+The p value of 0.28 means that if these samples were drawn from populations of the same ranks (medians), the probability of finding two samples with ranks *at least as different* as those in our samples is 0.28. (28% of the time). Not so unlikely to happen... so we do not reject the null hypothesis.
+
+There is no significant difference in ranks (medians) between group 1 and group 2 (statistical summary).
+
+Median scores for group 1 (M=14) and group 2 (M = 12) did not differ significantly (U(df) = 86, p =0.28). (Mann Whitney U test: U(df) = 86, p = 0.28)
+
+On assignments make sure tests align with what is presented to audience, decide which metric to compare things for a consistent message to compare groups throughout analysis.
+
+
 
